@@ -35,7 +35,11 @@ public class ApiController {
         return new ResponseEntity<>(new RequestResponse(service.sum(input)), HttpStatus.OK);
     }
 
+    /**
+     * Validates the input payload. In case of non valid input, throws an exception.
+     */
     private void validateInput(@NotNull RequestBodyInput input) {
+        // check for missing data
         if (input.getSummandOneType() == null ||
                 input.getSummandTwoType() == null||
                 input.getSummandOneValue() == null ||
@@ -45,6 +49,7 @@ public class ApiController {
             throw new ExceptionConfiguration.PayloadNotComplete();
         }
 
+        // check for negative values
         DoublePredicate predicate  = v -> v < 0;
         if (predicate.test(input.getSummandOneValue()) ||
                 predicate.test(input.getSummandTwoValue())) {
@@ -52,12 +57,14 @@ public class ApiController {
             throw new ExceptionConfiguration.SummandIsNegative();
         }
 
+        // validate summand types
         if (!UnitType.contains(input.getSummandOneType()) ||
                 !UnitType.contains(input.getSummandTwoType())) {
             logger.error("Correct summand type not found in request.");
             throw new ExceptionConfiguration.SummandTypeNotFound();
         }
 
+        // validate sum type
         if (!UnitType.contains(input.getSumType())) {
             logger.error("Correct sum type not found in request.");
             throw new ExceptionConfiguration.SumTypeNotFound();

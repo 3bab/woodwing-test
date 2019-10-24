@@ -1,11 +1,11 @@
 # Gintas' demo application for WoodWing
 
 
-##### Description
+### Description
 This application based on Spring Boot 2 and Gradle 4.
 Implemented according to the task requirements.
 
-##### The plan of attack (steps)
+### The plan of attack (steps)
 * setup spring boot app with dependencies
 * build folder structure for services, domain entities and controllers
 * set up logback logging
@@ -20,7 +20,7 @@ Implemented according to the task requirements.
 * test with docker 
 * modify readme
  
-##### The approach description:
+### The approach description:
 * Even though on the paper this task looks very simple, it has few very important elements that require more attention to details.
 I chose to implement REST API endpoint that returns the sum based on the payload. The first important questions to answer - 
 which request type to choose? GET is not suitable because we don't get any resource from the server. Nothing is saved or cached in any way. POST is not suitable because we are not trying to save anything on the server. I want the application to act as a
@@ -54,7 +54,7 @@ exception which is returned as 400 BAD REQUEST to the client. It's also logged.
 * There is no authentication or authorization on the API layer.
 * I added docker file. Easy to run and test dockerized.
 
-##### What can be improved:
+### What can be improved:
 Adding authentication would make the API more production-ready.
 Current implementation extensibility is limited. For example, if new units types are added, such as mile and inch, the number of conversion functions would increse from 2 to 12 (fromInchToMile, fromMeterToYard, fromMileToYard, ...etc). That would make the code quite difficult to read and maintain. In that case, applying some design pattern would be handy. Chain of responsibility comes first from the top my head but there might be better ones.
 

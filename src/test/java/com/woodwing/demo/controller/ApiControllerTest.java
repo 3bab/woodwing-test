@@ -4,7 +4,9 @@ import com.jayway.restassured.builder.RequestSpecBuilder;
 import com.jayway.restassured.http.ContentType;
 import com.jayway.restassured.specification.RequestSpecification;
 import com.woodwing.demo.domain.RequestBodyInput;
+import com.woodwing.demo.domain.RequestResponse;
 import org.apache.http.HttpStatus;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,7 +41,9 @@ public class ApiControllerTest {
         input.setSummandOneValue(10);
         input.setSummandTwoValue(20);
 
-        given().spec(requestSpec).content(input).when().put().then().statusCode(HttpStatus.SC_OK);
+        RequestResponse in = given().spec(requestSpec).content(input).when().put().then()
+                .statusCode(HttpStatus.SC_OK).extract().as(RequestResponse.class);
+        Assert.assertEquals(in.getSum(), 30.0, 0.0);
     }
 
     @Test

@@ -1,4 +1,4 @@
-# Gintas' demo application for Woodwing
+# Gintas' demo application for WoodWing
 
 
 ##### Description

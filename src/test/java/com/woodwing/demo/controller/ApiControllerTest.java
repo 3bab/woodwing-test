@@ -18,20 +18,20 @@ import static com.jayway.restassured.RestAssured.given;
 public class ApiControllerTest {
 
     private RequestSpecBuilder builder;
+    private RequestSpecification requestSpec;
 
     private static String baseUrl = "http://localhost:8080/sum";
 
     @Before
     public void setup() {
         builder = new RequestSpecBuilder();
+        builder.setBaseUri(baseUrl);
+        builder.setContentType(ContentType.JSON);
+        requestSpec = builder.build();
     }
 
     @Test
     public void testApiSum() {
-        builder.setBaseUri(baseUrl);
-        builder.setContentType(ContentType.JSON);
-        RequestSpecification requestSpec = builder.build();
-
         RequestBodyInput input = new RequestBodyInput();
         input.setSumType("yards");
         input.setSummandOneType("yards");
@@ -44,10 +44,6 @@ public class ApiControllerTest {
 
     @Test
     public void testApiSumBadRequestMissingType() {
-        builder.setBaseUri(baseUrl);
-        builder.setContentType(ContentType.JSON);
-        RequestSpecification requestSpec = builder.build();
-
         RequestBodyInput input = new RequestBodyInput();
         input.setSumType("");
         input.setSummandOneType("yards");
@@ -60,15 +56,21 @@ public class ApiControllerTest {
 
     @Test
     public void testApiSumBadRequestNegativeValue() {
-        builder.setBaseUri(baseUrl);
-        builder.setContentType(ContentType.JSON);
-        RequestSpecification requestSpec = builder.build();
-
         RequestBodyInput input = new RequestBodyInput();
         input.setSumType("yards");
         input.setSummandOneType("yards");
         input.setSummandTwoType("yards");
         input.setSummandOneValue(-10);
+        input.setSummandTwoValue(20);
+
+        given().spec(requestSpec).content(input).when().put().then().statusCode(HttpStatus.SC_BAD_REQUEST);
+    }
+
+    @Test
+    public void testApiSumBadRequestNullValue() {
+        RequestBodyInput input = new RequestBodyInput();
+        input.setSummandTwoType("yards");
+        input.setSummandOneValue(10);
         input.setSummandTwoValue(20);
 
         given().spec(requestSpec).content(input).when().put().then().statusCode(HttpStatus.SC_BAD_REQUEST);

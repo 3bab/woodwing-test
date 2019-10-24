@@ -36,6 +36,15 @@ public class ApiController {
     }
 
     private void validateInput(@NotNull RequestBodyInput input) {
+        if (input.getSummandOneType() == null ||
+                input.getSummandTwoType() == null||
+                input.getSummandOneValue() == null ||
+                input.getSummandTwoValue() == null ||
+                input.getSumType() == null) {
+            logger.error("Request payload not complete.");
+            throw new ExceptionConfiguration.PayloadNotComplete();
+        }
+
         DoublePredicate predicate  = v -> v < 0;
         if (predicate.test(input.getSummandOneValue()) ||
                 predicate.test(input.getSummandTwoValue())) {

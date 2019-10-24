@@ -33,7 +33,6 @@ public class ApiServiceTest {
 
     @Test
     public void testSum() {
-        // prepare the request data
         RequestBodyInput input = new RequestBodyInput();
         input.setSumType("yards");
         input.setSummandOneType("yards");

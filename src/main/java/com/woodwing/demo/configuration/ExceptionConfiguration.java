@@ -27,6 +27,12 @@ public class ExceptionConfiguration {
         }
     }
 
+    public static class PayloadNotComplete extends RuntimeException {
+        public PayloadNotComplete () {
+            super();
+        }
+    }
+
     /**
      * Handles exceptions thrown due to summand being negative.
      * @return BAD_REQUEST 400
@@ -54,6 +60,16 @@ public class ExceptionConfiguration {
     @ExceptionHandler
     @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason="Sum type not found")
     public ResponseEntity<String> handleException(SumTypeNotFound ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * Handles exceptions thrown due to sum type not found.
+     * @return BAD_REQUEST 400
+     */
+    @ExceptionHandler
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason="Request payload not complete")
+    public ResponseEntity<String> handleException(PayloadNotComplete ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }
